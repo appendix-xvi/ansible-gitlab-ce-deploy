@@ -1,0 +1,23 @@
+---
+- name: Guarded GitLab CE restore helper
+  hosts: gitlab
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Fail unless restore confirmation is explicitly provided
+      ansible.builtin.fail:
+        msg: >-
+          Restore is intentionally guarded. Re-run with
+          -e confirm_restore=true -e gitlab_restore_backup_id=<BACKUP_ID>.
+          See docs/backup-restore.md before restoring.
+      when:
+        - (confirm_restore | default(false) | bool) != true
+          or (gitlab_restore_backup_id | default('') | length) == 0
+
+    - name: Show manual restore command
+      ansible.builtin.debug:
+        msg:
+          - "Manual restore is required for safety."
+          - "Run on target VM: sudo gitlab-backup restore BACKUP={{ gitlab_restore_backup_id }}"
+          - "Then run: sudo gitlab-ctl reconfigure && sudo gitlab-ctl restart"
+          - "Follow the full checklist in docs/backup-restore.md"

@@ -1,0 +1,13 @@
+---
+gitlab_external_url: "http://gitlab.example.local"
+gitlab_package_name: "gitlab-ce"
+gitlab_package_version: ""
+gitlab_timezone: "UTC"
+gitlab_backup_path: "/var/opt/gitlab/backups"
+gitlab_backup_keep_time: 604800
+gitlab_ssh_port: 22
+gitlab_http_port: 80
+gitlab_https_port: 443
+gitlab_redirect_http_to_https: false
+gitlab_registry_enabled: false
+gitlab_monitoring_enabled: true

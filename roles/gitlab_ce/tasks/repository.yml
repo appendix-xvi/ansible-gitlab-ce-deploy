@@ -1,0 +1,11 @@
+---
+- name: Add GitLab CE package repository script
+  ansible.builtin.get_url:
+    url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
+    dest: /tmp/gitlab-ce-repo.sh
+    mode: '0755'
+
+- name: Configure GitLab CE package repository
+  ansible.builtin.command: /tmp/gitlab-ce-repo.sh
+  args:
+    creates: /etc/apt/sources.list.d/gitlab_gitlab-ce.list

@@ -1,0 +1,14 @@
+---
+- name: Ensure backup directory exists
+  ansible.builtin.file:
+    path: "{{ gitlab_backup_path }}"
+    state: directory
+    owner: git
+    group: git
+    mode: '0700'
+
+- name: Run GitLab backup
+  ansible.builtin.command: gitlab-backup create
+  environment:
+    GITLAB_BACKUP_DIR: "{{ gitlab_backup_path }}"
+  changed_when: true

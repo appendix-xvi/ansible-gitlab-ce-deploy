@@ -1,0 +1,11 @@
+---
+- name: Install prerequisite packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - ca-certificates
+      - tzdata
+      - openssh-server
+      - perl
+    update_cache: true
+    state: present

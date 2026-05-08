@@ -1,0 +1,7 @@
+---
+- name: Run GitLab CE validation tasks
+  hosts: gitlab
+  become: true
+  roles:
+    - role: gitlab_ce
+      tasks_from: validate.yml

@@ -1,0 +1,13 @@
+external_url '{{ gitlab_external_url }}'
+
+gitlab_rails['time_zone'] = '{{ gitlab_timezone }}'
+gitlab_rails['backup_path'] = '{{ gitlab_backup_path }}'
+gitlab_rails['backup_keep_time'] = {{ gitlab_backup_keep_time }}
+
+gitlab_rails['gitlab_shell_ssh_port'] = {{ gitlab_ssh_port }}
+nginx['listen_port'] = {{ gitlab_http_port }}
+nginx['listen_https'] = {{ 'true' if gitlab_https_port == 443 else 'false' }}
+nginx['redirect_http_to_https'] = {{ 'true' if gitlab_redirect_http_to_https else 'false' }}
+
+registry['enable'] = {{ 'true' if gitlab_registry_enabled else 'false' }}
+prometheus_monitoring['enable'] = {{ 'true' if gitlab_monitoring_enabled else 'false' }}

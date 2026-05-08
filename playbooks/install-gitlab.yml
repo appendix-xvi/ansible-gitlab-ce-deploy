@@ -1,0 +1,6 @@
+---
+- name: Install and configure GitLab CE on lab VM
+  hosts: gitlab
+  become: true
+  roles:
+    - role: gitlab_ce

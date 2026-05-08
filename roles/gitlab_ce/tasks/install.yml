@@ -1,0 +1,6 @@
+---
+- name: Install GitLab CE package
+  ansible.builtin.apt:
+    name: "{{ gitlab_package_name }}{{ ('=' ~ gitlab_package_version) if gitlab_package_version | length > 0 else '' }}"
+    state: present
+    update_cache: true
