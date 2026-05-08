@@ -1,0 +1,33 @@
+---
+- name: Validate GitLab service status
+  ansible.builtin.command: gitlab-ctl status
+  register: gitlab_status
+  changed_when: false
+
+- name: Validate gitlab.rb contains external_url
+  ansible.builtin.command: grep -F "external_url '{{ gitlab_external_url }}'" /etc/gitlab/gitlab.rb
+  changed_when: false
+
+- name: Validate required ports are listening
+  ansible.builtin.command: ss -ltn
+  register: gitlab_ports
+  changed_when: false
+  failed_when:
+    - "':' ~ (gitlab_ssh_port | string) ~ ' ' not in gitlab_ports.stdout"
+    - "':' ~ (gitlab_http_port | string) ~ ' ' not in gitlab_ports.stdout"
+
+- name: Validate local HTTP endpoint responds
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:{{ gitlab_http_port }}"
+    method: GET
+    status_code: [200, 301, 302]
+
+- name: Validate backup directory exists
+  ansible.builtin.stat:
+    path: "{{ gitlab_backup_path }}"
+  register: gitlab_backup_dir
+
+- name: Fail when backup directory is missing
+  ansible.builtin.fail:
+    msg: "Backup directory {{ gitlab_backup_path }} does not exist."
+  when: not gitlab_backup_dir.stat.exists

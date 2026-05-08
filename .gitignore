@@ -1,0 +1,15 @@
+inventory/hosts.ini
+*.retry
+.venv/
+__pycache__/
+.DS_Store
+*.log
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.yml
+*.secret
+*.tar
+*.tar.gz
+*.tgz

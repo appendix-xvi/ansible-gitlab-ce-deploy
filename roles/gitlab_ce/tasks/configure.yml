@@ -1,0 +1,14 @@
+---
+- name: Render GitLab configuration file
+  ansible.builtin.template:
+    src: gitlab.rb.j2
+    dest: /etc/gitlab/gitlab.rb
+    owner: root
+    group: root
+    mode: '0600'
+  notify:
+    - Reconfigure GitLab
+    - Restart GitLab
+
+- name: Flush handlers after configuration changes
+  ansible.builtin.meta: flush_handlers

@@ -1,0 +1,43 @@
+name: Ansible Lint
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install lint and ansible tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible ansible-lint yamllint
+
+      - name: Run yamllint
+        run: yamllint .
+
+      - name: Run ansible-lint
+        run: ansible-lint
+
+      - name: Syntax check install playbook
+        run: ansible-playbook -i inventory/hosts.example.ini --syntax-check playbooks/install-gitlab.yml
+
+      - name: Syntax check configure playbook
+        run: ansible-playbook -i inventory/hosts.example.ini --syntax-check playbooks/configure-gitlab.yml
+
+      - name: Syntax check validate playbook
+        run: ansible-playbook -i inventory/hosts.example.ini --syntax-check playbooks/validate-gitlab.yml
+
+      - name: Syntax check backup playbook
+        run: ansible-playbook -i inventory/hosts.example.ini --syntax-check playbooks/backup-gitlab.yml
+
+      - name: Syntax check restore playbook
+        run: ansible-playbook -i inventory/hosts.example.ini --syntax-check playbooks/restore-gitlab.yml
